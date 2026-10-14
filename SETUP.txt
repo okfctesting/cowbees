@@ -1,0 +1,74 @@
+COWBEES ADMIN PANEL - SETUP (ek baar karna hai)
+================================================
+
+Is folder ma kya hai
+- index.html            : customers wala menu page (menu ka original data is ke andar hai)
+- admin.html            : owner ka panel  ->  https://cowbees.netlify.app/admin
+- netlify/functions/menu.mjs : owner ki tabdeeliyan save/load karta hai
+- package.json, netlify.toml : Netlify ki settings
+- manifest.json, icon-*.png, og-image.jpg : app icon / WhatsApp preview (pehle jaisa)
+
+ZAROORI: Ye "drag & drop" se nahi chalega, kyunke save karne wale hisse ko ek package (@netlify/blobs)
+chahiye jo sirf Git ya Netlify CLI se deploy karne par install hota hai.
+
+TAREEQA 1 (asaan): GitHub ke zariye
+1. github.com par free account banayen, naya repository banayen (naam: cowbees).
+2. Repository ma "Add file > Upload files" se is folder ki SAARI cheezein upload karein
+   (netlify folder samet), phir "Commit changes".
+3. Netlify ma: Add new site > Import an existing project > GitHub > cowbees repository chunein > Deploy.
+   (Build command khali chhor dein.)
+   Agar cowbees.netlify.app pehle se drag&drop wali site hai, to nayi site bana kar purani wali ka
+   naam badal lein ya domain nayi site par laga dein.
+4. Netlify ma apni site kholein > Site configuration > Environment variables > Add a variable:
+      Key:   ADMIN_PASSWORD
+      Value: (koi mazboot password jo sirf owner jaanta ho)
+5. Deploys > Trigger deploy > Deploy site (taake password lag jaye).
+6. Check: https://AAPKI-SITE.netlify.app/api/menu kholein. Ye dikhna chahiye:  {"v":1,"items":{}}
+7. https://AAPKI-SITE.netlify.app/admin kholein, password daalein, prices/photos badlein, Save dabayen.
+
+TAREEQA 2: Netlify CLI (computer par Node.js ho to)
+   npm i -g netlify-cli
+   netlify login
+   netlify link          (apni maujooda site chunein)
+   netlify env:set ADMIN_PASSWORD "apna-password"
+   netlify deploy --prod
+
+Owner ke liye
+- /admin par jayen, password daalein.
+- Upar "Settings" ma: owner ka WhatsApp number, Delivery charge (Rs. 100) aur Blizzard extra topping (Rs. 80) badal sakte hain.
+- Neeche har category (Cone, Cups, Blizzards, Sundaes, Shakes, Hot Menu, Desserts...) ka apna tab hai.
+  Har item ka naam, price, photo badal sakte hain. Items ki photo pehle se nahi hoti; "Change photo" se laga sakte hain.
+- "Hide" tick karne se item customers ko nazar nahi aata.
+- "Reset item" us item ko original halat ma le aata hai.
+- Save dabane ke ek minute ke andar customers ko naya menu dikhta hai.
+
+Online payment (JazzCash / EasyPaisa)
+- /admin ma upar "Online payment" box ma account number, naam aur official logo daalein, "Show on site" tick karein, Save dabayen.
+- Customer checkout ma Cash / JazzCash / EasyPaisa chunta hai, number copy karta hai, payment bhej kar
+  Transaction ID (TID) likhta hai aur screenshot chunta hai.
+- Screenshot chune to phone ka share menu khulta hai (order text + screenshot), WhatsApp ma Cowbees ka chat chunna hota hai.
+  Computer par ya na chune to order text wa.me se jata hai aur screenshot usi chat ma manually attach karna hota hai.
+- Agar koi online payment "Show on site" na ho to customer ko sirf Cash dikhta hai (pehle jaisa).
+
+Naye offers / items / sections (admin se)
+- Kisi bhi tab ma peela button "Add new offer / item here" dabayen. Naam, price, photo (aur chaho to description) daalein.
+- "Show on site" tick karein aur Save dabayen - tab hi wo item customers ko nazar aayega. Tick na ho to wo draft rehta hai.
+- "NEW badge" tick karne se item par NEW ka nishan lagta hai aur wo apni category ma sab se upar aata hai.
+- "New Offers" tab (sab se pehla) ek khaas category hai jo menu ma sab se upar aati hai. "Show New Offers on site" tick karein to dikhti hai.
+- "New section" se nayi category banayen (jaise Ramzan Deals, Family Packs). "Show this category first" tick karein to wo sab se upar aayegi.
+- Category ya item ko Delete se hamesha ke liye hata sakte hain. Category ke "Show section on site" ka tick hata dein to poori category chhup jati hai.
+- Jitne chahein items aur sections bana sakte hain (30 sections, 300 items tak).
+
+Dhyan rakhein
+- Password kisi ko na batayen. Badalna ho to Netlify ma ADMIN_PASSWORD badal kar dobara deploy karein.
+- Admin ke baghair bhi site chalti rahegi: agar server na mile to customers ko original menu dikhta hai.
+- Bohat zyada photos lagane se save ka size limit (5 MB) cross ho sakta hai; photos apne aap chhoti ho jati hain,
+  lekin sab 110+ items par photo lagani ho to thori thori karke save karte jayen.
+- Customers ka cart aur naam/phone unke phone ma yaad rehta hai (dubara order asaan).
+
+Admin ko phone ma app ki tarah install karna
+- Phone par https://AAPKI-SITE.netlify.app/admin kholein, password daal kar login karein (neeche "Is phone par login yaad rakhein" tick rakhein).
+- Android (Chrome): login screen par "Install Cowbees Admin app" button aata hai (ya menu > Install app). Home screen par "Cowbees Admin" icon (neeche ADMIN likha hua) ban jata hai.
+- iPhone (Safari): Share ⬆️ > Add to Home Screen.
+- Customers wali app alag hai (Cowbees icon); admin wali app ka icon alag hai, dono phone par saath chal sakti hain.
+- Shared phone par login yaad rakhne wala tick hata dein, ya Log out dabayen.

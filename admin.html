@@ -1,0 +1,593 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#FFCC00">
+<link rel="manifest" href="/admin-manifest.json">
+<link rel="icon" type="image/png" sizes="192x192" href="/admin-icon-192.png">
+<link rel="apple-touch-icon" href="/admin-icon-192.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Cowbees Admin">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<title>Cowbees Admin</title>
+<style>
+:root{--yellow:#FFCC00;--yellow-soft:#FFF0A6;--yellow-pale:#FFF8D6;--white:#fff;--brown:#2B1810;--brown-soft:#6B5648;--line:#F1E5B5;--green:#17a24f;--red:#D93025;
+--shadow-sm:0 2px 8px rgba(43,24,16,.07);--shadow-md:0 8px 24px rgba(43,24,16,.12)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+[hidden]{display:none!important}
+body{margin:0;color:var(--brown);font:16px/1.4 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;-webkit-font-smoothing:antialiased;
+background-color:var(--yellow-pale);
+background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='100' viewBox='0 0 56 100'%3E%3Cpath d='M28 66L0 50L0 16L28 0L56 16L56 50L28 66L28 100' fill='none' stroke='%23FFCC00' stroke-opacity='.35' stroke-width='2'/%3E%3Cpath d='M28 0L28 34L0 50L0 84L28 100L56 84L56 50L28 34' fill='none' stroke='%23FFCC00' stroke-opacity='.35' stroke-width='2'/%3E%3C/svg%3E");
+padding-bottom:calc(96px + env(safe-area-inset-bottom,0px))}
+.wrap{max-width:720px;margin:0 auto;padding:16px}
+h1{font-size:20px;margin:0;font-weight:900;letter-spacing:-.3px}
+input,button{font:inherit}
+input[type=text],input[type=number],input[type=password]{width:100%;background:var(--white);color:var(--brown);border:2px solid var(--line);border-radius:12px;padding:11px 12px;font-size:16px;transition:border-color .2s,box-shadow .2s}
+input:focus{outline:none;border-color:var(--yellow);box-shadow:0 0 0 4px rgba(255,204,0,.25)}
+.btn{border:0;border-radius:12px;padding:11px 16px;font-weight:800;cursor:pointer;background:var(--brown);color:var(--yellow);transition:transform .15s}
+.btn:active{transform:scale(.96)}
+.btn.yel{background:var(--yellow);color:var(--brown);box-shadow:0 4px 12px rgba(255,204,0,.45)}
+.btn.green{background:var(--green);color:#fff}.btn:disabled{opacity:.45;cursor:default}
+.btn.del{background:#FDE7E5;color:var(--red)}
+.top{position:sticky;top:0;z-index:5;background:linear-gradient(160deg,#FFCC00 0%,#FFD93D 100%);border-radius:0 0 24px 24px;box-shadow:var(--shadow-md);padding:calc(10px + env(safe-area-inset-top,0px)) 16px 12px}
+.top .in{max-width:720px;margin:0 auto;display:flex;align-items:center;gap:10px}
+.top img{height:42px;width:42px;border-radius:50%;background:#fff;border:3px solid var(--brown)}
+.top .sp{flex:1}
+.top a{color:var(--brown);text-decoration:none;font-weight:800;font-size:14px;background:rgba(255,255,255,.55);padding:7px 12px;border-radius:999px}
+.top .btn{background:var(--brown);color:var(--yellow)}
+.tabs{display:flex;flex-wrap:wrap;gap:6px;margin:14px 0}
+.tab{flex:1 1 auto;background:var(--white);border:0;color:var(--brown);border-radius:999px;padding:9px 12px;font-weight:700;font-size:13px;cursor:pointer;box-shadow:var(--shadow-sm);transition:background .2s,color .2s}
+.tab[aria-selected=true]{background:var(--brown);color:var(--yellow)}
+.tab.add{flex:1 1 100%;background:var(--yellow-soft);color:var(--brown);border:2px dashed var(--yellow);font-size:14px;padding:10px}
+.row{background:var(--white);border:1px solid rgba(255,204,0,.45);border-radius:18px;padding:14px;margin-bottom:12px;box-shadow:var(--shadow-sm)}
+.row.off{opacity:.55}
+.row.cust{border-color:var(--yellow);background:#FFFDF0}.row.draft{opacity:.85;border-style:dashed}
+.head{display:flex;gap:12px;align-items:center}
+.payblk{border-top:1px dashed var(--line);padding-top:12px;margin-top:12px}
+.thumb{flex:none;width:64px;height:64px;border-radius:14px;background:var(--yellow-pale);object-fit:cover;border:1px solid var(--line)}
+.thumb.none{display:grid;place-items:center;color:var(--brown-soft);font-size:11px;border:1px dashed #E3D28A;text-align:center}
+.payblk .thumb{width:96px;height:48px;object-fit:contain}
+.head .t{flex:1;min-width:0}
+.lab{display:block;font-size:12.5px;color:var(--brown-soft);font-weight:700;margin:10px 0 4px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.two .lab{margin-top:0}
+.acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;align-items:center}
+.acts .btn{padding:8px 12px;font-size:14px}
+.chk{display:flex;align-items:center;gap:8px;font-size:14px;margin-left:auto;cursor:pointer;font-weight:600}
+.chk input{width:20px;height:20px;accent-color:var(--brown)}
+.chks{display:flex;flex-wrap:wrap;gap:14px;margin-top:12px}.chks .chk{margin-left:0}
+.mark{font-size:12px;color:#B07A00;font-weight:800}
+.live{color:var(--green);font-size:12px;font-weight:800}.draft-t{color:#D97706;font-size:12px;font-weight:800}
+.bar{position:fixed;left:0;right:0;bottom:0;background:var(--brown);border-radius:22px 22px 0 0;box-shadow:0 -10px 30px rgba(43,24,16,.25);padding:12px 16px calc(12px + env(safe-area-inset-bottom,0px))}
+.bar .in{max-width:720px;margin:0 auto;display:flex;gap:12px;align-items:center}
+.bar .msg{flex:1;font-size:14px;color:#D9C9B8;font-weight:600}
+.bar .msg.ok{color:#6EE79A}.bar .msg.err{color:#FF9A92}
+.card{background:var(--white);border:1px solid rgba(255,204,0,.45);border-radius:22px;padding:22px;margin-top:12vh;box-shadow:var(--shadow-md)}
+.card h1{font-size:24px;margin-bottom:6px}
+.note{color:var(--brown-soft);font-size:14px}
+.addbtn{width:100%;margin-bottom:12px;padding:14px;font-size:16px}
+.mv{flex:none;display:flex;flex-direction:column;align-items:center;gap:2px}
+.mv button{width:34px;height:26px;border:0;border-radius:8px;background:var(--yellow-soft);color:var(--brown);font-size:12px;font-weight:900;cursor:pointer;line-height:1}
+.mv .grip{height:32px;background:var(--yellow);font-size:18px;cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none}
+.row.drag{box-shadow:0 10px 28px rgba(43,24,16,.3);border-color:var(--brown);transform:scale(1.01);position:relative;z-index:3}
+.tab.arr{flex:1 1 100%;background:var(--yellow);color:var(--brown);font-size:14px;padding:10px}
+.tab.arr[aria-selected=true]{background:var(--brown);color:var(--yellow)}
+.sec-h{font-size:13px;font-weight:900;letter-spacing:1.4px;text-transform:uppercase;color:var(--brown);margin:20px 4px 8px;display:flex;align-items:center;gap:10px}
+.sec-h::after{content:"";flex:1;border-top:3px dotted var(--yellow)}
+</style>
+</head>
+<body>
+
+<div id="login" class="wrap">
+  <div class="card">
+    <h1>🐝 Cowbees Admin</h1>
+    <p class="note">Enter the admin password to change prices, photos and offers.</p>
+    <input id="pw" type="password" placeholder="Password" autocomplete="current-password">
+    <p id="lerr" class="note" style="color:#D93025;min-height:20px;margin:8px 0"></p>
+    <label class="chk" style="margin:0 0 12px"><input type="checkbox" id="rem" checked> Is phone par login yaad rakhein</label>
+    <button id="go" class="btn yel" style="width:100%">Log in</button>
+    <button id="install" class="btn" type="button" style="width:100%;margin-top:10px" hidden>📲 Install Cowbees Admin app</button>
+    <p class="note" id="iosnote" style="margin:12px 0 0;font-size:13px" hidden>iPhone par: Safari ma Share ⬆️ dabayen, phir <b>Add to Home Screen</b>.</p>
+  </div>
+</div>
+
+<div id="app" hidden>
+  <div class="top"><div class="in">
+    <img src="/admin-icon-192.png" alt="">
+    <h1>Menu editor</h1><span class="sp"></span>
+    <a href="/" target="_blank" rel="noopener">View site</a>
+    <button id="install2" class="btn" type="button" style="padding:7px 12px;font-size:13px" hidden>📲 Install</button>
+    <button id="out" class="btn" style="padding:7px 12px;font-size:13px">Log out</button>
+  </div></div>
+  <div class="wrap">
+    <div class="sec-h" style="margin-top:6px">Settings</div>
+    <div class="row">
+      <span class="lab" style="margin-top:0">Owner WhatsApp number (customer orders are sent here)</span>
+      <input id="wa" type="text" inputmode="tel" maxlength="20" placeholder="03XXXXXXXXX" autocomplete="off">
+      <span class="note" style="display:block;margin-top:6px">Example: 03116226121. Press <b>Save</b> after changing it.</span>
+      <div class="two" style="margin-top:14px">
+        <div><span class="lab">Delivery charge (Rs.)</span><input id="delivery" type="number" inputmode="numeric" min="0" placeholder="100"></div>
+        <div><span class="lab">Blizzard extra topping (Rs.)</span><input id="topping" type="number" inputmode="numeric" min="0" placeholder="80"></div>
+      </div>
+    </div>
+    <div class="row" id="payrow">
+      <span class="lab" style="margin-top:0"><b>Online payment</b> (JazzCash / EasyPaisa)</span>
+      <span class="note" style="display:block;margin:4px 0 10px">Tick <b>Show on site</b> and enter the account number. Customers then see it at checkout, copy the number, enter the transaction ID and can send the payment screenshot with their order. Upload the official logo yourself.</span>
+      <div class="payblk" data-k="jazzcash">
+        <div class="head"><div data-logo></div>
+          <div class="t"><span class="lab" style="margin-top:0">JazzCash</span>
+            <label class="chk" style="margin-left:0"><input type="checkbox" data-pf="on"> Show on site</label></div></div>
+        <span class="lab">Account number</span><input type="text" inputmode="tel" maxlength="20" data-pf="number" placeholder="03XXXXXXXXX" autocomplete="off">
+        <span class="lab">Account title (name)</span><input type="text" maxlength="60" data-pf="title" placeholder="e.g. Cowbees Okara" autocomplete="off">
+        <div class="acts"><button class="btn" type="button" data-pact="logo">Upload logo</button><button class="btn" type="button" data-pact="rmlogo">Remove logo</button></div>
+      </div>
+      <div class="payblk" data-k="easypaisa">
+        <div class="head"><div data-logo></div>
+          <div class="t"><span class="lab" style="margin-top:0">EasyPaisa</span>
+            <label class="chk" style="margin-left:0"><input type="checkbox" data-pf="on"> Show on site</label></div></div>
+        <span class="lab">Account number</span><input type="text" inputmode="tel" maxlength="20" data-pf="number" placeholder="03XXXXXXXXX" autocomplete="off">
+        <span class="lab">Account title (name)</span><input type="text" maxlength="60" data-pf="title" placeholder="e.g. Cowbees Okara" autocomplete="off">
+        <div class="acts"><button class="btn" type="button" data-pact="logo">Upload logo</button><button class="btn" type="button" data-pact="rmlogo">Remove logo</button></div>
+      </div>
+    </div>
+
+    <div class="sec-h">Menu</div>
+    <p class="note" style="margin-top:0">Change a price, name or photo, then press <b>Save</b>. Tick <b>Hide</b> to take an item off the menu. Use <b>➕ Add new offer / item</b> to add your own items in any category, and <b>➕ New section</b> to make a new category. A new item shows on the site only after you tick <b>Show on site</b> and press Save. Customers see changes within a minute.</p>
+    <div class="tabs" id="tabs" role="tablist"></div>
+    <div id="list"></div>
+  </div>
+  <div class="bar"><div class="in">
+    <span id="msg" class="msg">No changes yet</span>
+    <button id="save" class="btn green" disabled>Save</button>
+  </div></div>
+</div>
+
+<input id="file" type="file" accept="image/*" hidden>
+<script>
+/* Cowbees base menu (defaults). Owner changes made in /admin are saved separately and applied on top of this. */
+window.COW = {CATS: [{"id":"cone","name":"Cone","emoji":"🍦","items":[{"id":"cone-0","name":"Vanilla Cone","price":160},{"id":"cone-1","name":"Choco Dip Cone","price":240},{"id":"cone-2","name":"Waffle Cone","price":170},{"id":"cone-3","name":"Waffle Dip Cone","price":250},{"id":"cone-4","name":"Special Nutty Waffle","price":250},{"id":"cone-5","name":"Oreo Waffle","price":220},{"id":"cone-6","name":"Crunchy Waffle","price":200},{"id":"cone-7","name":"Sprinkle Waffle","price":200}]},{"id":"cups","name":"Cups","emoji":"🥣","items":[{"id":"cups-0","name":"Vanilla Cup","price":160},{"id":"cups-1","name":"Choco Dip Cup","price":220},{"id":"cups-2","name":"Smart Beans Cup","price":200},{"id":"cups-3","name":"Crunch Cup","price":200},{"id":"cups-4","name":"Waffle Dip Cone in Cup","price":250},{"id":"cups-5","name":"Nutty Cup","price":250}]},{"id":"blizzards","name":"Blizzards","emoji":"🥤","items":[{"id":"blizzards-0","name":"Oreo Blizzard","price":450},{"id":"blizzards-1","name":"Oreo Mint Blizzard","price":480},{"id":"blizzards-2","name":"Oreo Chocolate","price":500},{"id":"blizzards-3","name":"Oreo Mocha Fudge","price":500},{"id":"blizzards-4","name":"Kitkat Blizzard","price":500},{"id":"blizzards-5","name":"Kitkat Xtreme","price":580},{"id":"blizzards-6","name":"Chocolate Xtreme","price":550},{"id":"blizzards-7","name":"M&M's Blizzard","price":500},{"id":"blizzards-8","name":"M&M's Xtreme","price":550},{"id":"blizzards-9","name":"Snickers Blizzard","price":500},{"id":"blizzards-10","name":"Blueberry Cheesecake","price":550},{"id":"blizzards-11","name":"Strawberry Cheesecake","price":550},{"id":"blizzards-12","name":"Caramel Cheesecake","price":550},{"id":"blizzards-13","name":"Cookies Butter","price":500},{"id":"blizzards-14","name":"Bounty Blizzard","price":500},{"id":"blizzards-15","name":"Bounty Xtreme","price":550},{"id":"blizzards-16","name":"Mars Blizzard","price":500},{"id":"blizzards-17","name":"Dairy Milk Blizzard","price":500},{"id":"blizzards-18","name":"Toblerone Blizzard","price":500}]},{"id":"signature","name":"Signature Blizzard","emoji":"⭐","items":[{"id":"signature-0","name":"Lotus Blizzard","price":600},{"id":"signature-1","name":"Lotus Cheesecake","price":700},{"id":"signature-2","name":"Crunchy Nuts","price":500},{"id":"signature-3","name":"Nutsy Bee's Blizzard","price":650},{"id":"signature-4","name":"Brookies Blizzard","price":500},{"id":"signature-5","name":"Nutty Butty Blizzard","price":500}]},{"id":"sundaes","name":"Sundaes","emoji":"🍨","items":[{"id":"sundaes-0","name":"Vanilla","price":350},{"id":"sundaes-1","name":"Butter Scotch","price":430},{"id":"sundaes-2","name":"Choco Fudge","price":430},{"id":"sundaes-3","name":"Hazelnut","price":550},{"id":"sundaes-4","name":"Honey","price":430},{"id":"sundaes-5","name":"Coffee","price":430},{"id":"sundaes-6","name":"Cookie Butter","price":480},{"id":"sundaes-7","name":"Oreo Sundae","price":500},{"id":"sundaes-8","name":"Lotus Sundae","price":550}]},{"id":"berries","name":"Berries Sundaes","emoji":"🍓","items":[{"id":"berries-0","name":"Strawberry","price":430},{"id":"berries-1","name":"Blue Berry","price":500},{"id":"berries-2","name":"Mixed Berries","price":500}]},{"id":"fruits","name":"Fruits Sundaes","emoji":"🥭","items":[{"id":"fruits-0","name":"Pineapple","price":400},{"id":"fruits-1","name":"Mango","price":400},{"id":"fruits-2","name":"Coconut","price":400}]},{"id":"cold-coffee","name":"Cold Coffees","emoji":"🧊","items":[{"id":"cold-coffee-0","name":"Special Cold Coffee","price":550},{"id":"cold-coffee-1","name":"Kitkat Cold Coffee","price":700},{"id":"cold-coffee-2","name":"Toblerone Cold Coffee","price":700},{"id":"cold-coffee-3","name":"Caramel Cold Coffee","price":550},{"id":"cold-coffee-4","name":"Crunchy Cold Coffee","price":650},{"id":"cold-coffee-5","name":"Brownie Explosion Cold Coffee","price":650}]},{"id":"shakes","name":"Shakes","emoji":"🥛","items":[{"id":"shakes-0","name":"Vanilla Shake","price":550},{"id":"shakes-1","name":"Butter Scotch Shake","price":550},{"id":"shakes-2","name":"Butter Scotch Cheesecake Shake","price":650},{"id":"shakes-3","name":"Chocolate Shake","price":550},{"id":"shakes-4","name":"Choco-Vanilla Shake","price":550},{"id":"shakes-5","name":"Oreo Shake","price":550},{"id":"shakes-6","name":"Oreo Chocolate Shake","price":550},{"id":"shakes-7","name":"Mint Shake","price":550},{"id":"shakes-8","name":"Mint Oreo Shake","price":550},{"id":"shakes-9","name":"Strawberry Shake","price":550},{"id":"shakes-10","name":"Strawberry Cheesecake Shake","price":650},{"id":"shakes-11","name":"Blueberry Shake","price":550},{"id":"shakes-12","name":"Blueberry Cheesecake Shake","price":650},{"id":"shakes-13","name":"Mango Shake","price":550},{"id":"shakes-14","name":"Mango Cheesecake Shake","price":650}]},{"id":"special-shakes","name":"Special Shakes","emoji":"🧋","items":[{"id":"special-shakes-0","name":"Kit Kat Shake","price":700},{"id":"special-shakes-1","name":"Snickers Shake","price":700},{"id":"special-shakes-2","name":"Toblerone Shake","price":700},{"id":"special-shakes-3","name":"Coconut Shake","price":700},{"id":"special-shakes-4","name":"Nutella Shake","price":700},{"id":"special-shakes-5","name":"Lotus Shake","price":700},{"id":"special-shakes-6","name":"Lotus Cheesecake Shake","price":750},{"id":"special-shakes-7","name":"The Nutsy Bee's Shake","price":700},{"id":"special-shakes-8","name":"Choco Peanut Butter Shake","price":700},{"id":"special-shakes-9","name":"Dairy Milk Shake","price":700},{"id":"special-shakes-10","name":"Fudge Brownie Shake","price":700}]},{"id":"cowbees-special","name":"Cowbees Special","emoji":"🐝","items":[{"id":"cowbees-special-0","name":"Lava Cake with Ice Cream","price":600},{"id":"cowbees-special-1","name":"Brownie with Ice Cream","price":500},{"id":"cowbees-special-2","name":"Xtreme Sauce Brownie & Ice Cream","price":550},{"id":"cowbees-special-3","name":"Triple Decker Cup","price":550},{"id":"cowbees-special-4","name":"Xtreme Spaghetti Ice Cream","price":500}]},{"id":"hot","name":"Hot Menu","emoji":"☕","items":[{"id":"hot-0","name":"Tea","price":130},{"id":"hot-1","name":"Pink Tea","price":180},{"id":"hot-2","name":"Caramel Tea","price":180},{"id":"hot-3","name":"Cappuccino Coffee","price":250},{"id":"hot-4","name":"Latte Coffee","price":250},{"id":"hot-5","name":"Hot Chocolate","price":300}]},{"id":"coffee-flavors","name":"Coffee Flavors","emoji":"🫖","items":[{"id":"coffee-flavors-0","name":"Hazelnut Latte","price":300},{"id":"coffee-flavors-1","name":"Caramel Latte","price":300},{"id":"coffee-flavors-2","name":"Vanilla Latte","price":300},{"id":"coffee-flavors-3","name":"Cinnamon Latte","price":300},{"id":"coffee-flavors-4","name":"Mocha (Chocolate Latte)","price":300}]},{"id":"desserts","name":"Desserts","emoji":"🍰","items":[{"id":"desserts-0","name":"Lava Cake","price":450},{"id":"desserts-1","name":"Brownie","price":350},{"id":"desserts-2","name":"Cheese Cake (Slice)","price":500},{"id":"desserts-3","name":"Cheese Cake with Topping Fruit","price":550},{"id":"desserts-4","name":"Cheese Cake with Premium Topping","price":600}]},{"id":"winter","name":"Winter Hot Menu","emoji":"🍲","items":[{"id":"winter-0","name":"Hot & Sour Soup","price":300}]}]};
+</script>
+<script>
+(function(){
+  'use strict';
+  var B = window.COW, $ = function(s){ return document.querySelector(s); };
+  var pass = '';
+  try{ pass = localStorage.getItem('cowbees_admin') || sessionStorage.getItem('cowbees_admin') || ''; }catch(e){}
+  var tab = 'newoffers', ed = {}, dirty = false, picking = null, cs = {sections:[], items:[]}, ord = {cats:null, items:{}};
+  var DEFAULT_WA = '923116226121';
+  var PAYK = ['jazzcash', 'easypaisa'], PAYN = {jazzcash:'JazzCash', easypaisa:'EasyPaisa'};
+  var pay = {jazzcash:{on:false,number:'',title:'',img:null}, easypaisa:{on:false,number:'',title:'',img:null}};
+  var ALL = [], CATOF = {};
+  B.CATS.forEach(function(c){ c.items.forEach(function(x){ ALL.push(x); CATOF[x.id] = c.id; }); });
+  var esc = function(s){ return String(s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); };
+  var IDRE = /^[a-z0-9_-]{1,20}$/i;
+
+  function setMsg(t, cls){ var m = $('#msg'); m.textContent = t; m.className = 'msg' + (cls ? ' ' + cls : ''); }
+  function setDirty(v){ dirty = v; $('#save').disabled = !v; if(v) setMsg('You have unsaved changes'); }
+  function okN(v){ return typeof v === 'number' && isFinite(v) && v >= 0 && v < 1e6; }
+  function numVal(v){ return okN(v) ? v : ''; }
+  function uid(p){ return p + Date.now().toString(36) + Math.random().toString(36).slice(2, 5); }
+  function normWA(v){ var d = String(v).replace(/\D/g, ''); if(/^0\d{10}$/.test(d)) d = '92' + d.slice(1); return /^\d{10,15}$/.test(d) ? d : null; }
+  function showWA(n){ return /^92\d{10}$/.test(n) ? '0' + n.slice(2) : n; }
+  function secOf(id){ return cs.sections.filter(function(z){ return z.id === id; })[0] || null; }
+  function itemOf(id){ return cs.items.filter(function(z){ return z.id === id; })[0] || null; }
+  function catOf(id){ return B.CATS.filter(function(c){ return c.id === id; })[0] || null; }
+
+  /* same rule the customer site uses: listed ids first (in order), unlisted "front" ones before, others after */
+  function sortBy(list, order, isFront){
+    if(!Array.isArray(order)) return list;
+    var pos = Object.create(null);
+    order.forEach(function(id, i){ if(typeof id === 'string' && !(id in pos)) pos[id] = i; });
+    var listed = list.filter(function(x){ return x.id in pos; }).sort(function(a, b){ return pos[a.id] - pos[b.id]; });
+    var un = list.filter(function(x){ return !(x.id in pos); });
+    return un.filter(isFront).concat(listed, un.filter(function(x){ return !isFront(x); }));
+  }
+  function catList(){
+    var secs = cs.sections, fr = secs.filter(function(z){ return z.first; }), re = secs.filter(function(z){ return !z.first; });
+    var toC = function(z, front){ return {id:z.id, front:front, sec:z,
+      label:z.id === 'newoffers' ? '⭐ New Offers' : ((z.emoji || '') + ' ' + (z.title || 'Untitled'))}; };
+    var all = fr.map(function(z){ return toC(z, true); })
+      .concat(B.CATS.map(function(c){ return {id:c.id, front:false, label:c.emoji + ' ' + c.name}; }), re.map(function(z){ return toC(z, false); }));
+    return sortBy(all, ord.cats, function(c){ return c.front; });
+  }
+  function itemList(t){
+    var cat = catOf(t), base = (cat ? cat.items : []).map(function(x){ return {id:x.id, base:x, cust:null}; });
+    var cu = cs.items.filter(function(x){ return x.sec === t; }).map(function(x){ return {id:x.id, base:null, cust:x}; });
+    var seq = cu.filter(function(e){ return e.cust.isNew; }).concat(base, cu.filter(function(e){ return !e.cust.isNew; }));
+    return sortBy(seq, ord.items[t], function(e){ return !!(e.cust && e.cust.isNew); });
+  }
+  function mvCol(id){ return '<div class="mv"><button type="button" data-mv="-1" data-rid="'+id+'" aria-label="Move up">▲</button><button type="button" class="grip" aria-label="Drag to move">⠿</button><button type="button" data-mv="1" data-rid="'+id+'" aria-label="Move down">▼</button></div>'; }
+
+  function api(method, qs, body){
+    return fetch('/api/menu' + (qs || ''), {
+      method: method, cache: 'no-store',
+      headers: Object.assign({'x-admin-key': pass}, body ? {'content-type':'application/json'} : {}),
+      body: body ? JSON.stringify(body) : undefined
+    });
+  }
+
+  /* ---------- payment block ---------- */
+  function loadPay(saved){
+    PAYK.forEach(function(k){
+      var o = (saved && saved.pay && saved.pay[k]) || {};
+      pay[k] = {on:o.on === true, number:typeof o.number === 'string' ? o.number : '', title:typeof o.title === 'string' ? o.title : '', img:typeof o.img === 'string' ? o.img : null};
+    });
+    renderPay();
+  }
+  function renderPay(){
+    document.querySelectorAll('.payblk').forEach(function(el){
+      var k = el.dataset.k, e = pay[k];
+      el.querySelector('[data-pf=on]').checked = e.on;
+      el.querySelector('[data-pf=number]').value = e.number;
+      el.querySelector('[data-pf=title]').value = e.title;
+      el.querySelector('[data-logo]').innerHTML = e.img ? '<img class="thumb" style="background:#fff" alt="" src="' + e.img + '">' : '<div class="thumb none">No logo</div>';
+    });
+  }
+
+  /* ---------- start from the original menu + whatever the owner saved before ---------- */
+  function load(saved){
+    ed = {};
+    loadPay(saved);
+    $('#wa').value = showWA(saved && typeof saved.whatsapp === 'string' && /^\d{10,15}$/.test(saved.whatsapp) ? saved.whatsapp : DEFAULT_WA);
+    $('#delivery').value = saved && okN(saved.delivery) ? saved.delivery : 100;
+    $('#topping').value = saved && okN(saved.topping) ? saved.topping : 80;
+    var so = (saved && saved.order && typeof saved.order === 'object') ? saved.order : {};
+    ord = {cats:Array.isArray(so.cats) ? so.cats.filter(function(x){ return typeof x === 'string'; }) : null, items:{}};
+    if(so.items && typeof so.items === 'object') Object.keys(so.items).forEach(function(k){ if(Array.isArray(so.items[k])) ord.items[k] = so.items[k].filter(function(x){ return typeof x === 'string'; }); });
+    var c = (saved && saved.custom) || {};
+    cs = {sections:[], items:[]};
+    (Array.isArray(c.sections) ? c.sections : []).forEach(function(z){
+      if(z && IDRE.test(z.id || '')) cs.sections.push({id:z.id, title:typeof z.title === 'string' ? z.title : '', emoji:typeof z.emoji === 'string' ? z.emoji : '', on:z.on !== false, first:z.first === true});
+    });
+    var fx = cs.sections.filter(function(z){ return z.id === 'newoffers'; })[0];
+    cs.sections = cs.sections.filter(function(z){ return z.id !== 'newoffers'; });
+    cs.sections.unshift({id:'newoffers', title:'New Offers', emoji:'⭐', on:fx ? fx.on === true : false, first:true});
+    (Array.isArray(c.items) ? c.items : []).forEach(function(e){
+      if(!e || !IDRE.test(e.id || '') || !IDRE.test(e.sec || '')) return;
+      cs.items.push({id:e.id, sec:e.sec, name:typeof e.name === 'string' ? e.name : '', desc:typeof e.desc === 'string' ? e.desc : '',
+        price:typeof e.price === 'number' ? e.price : null, img:typeof e.img === 'string' ? e.img : null,
+        on:e.on === true, isNew:e.isNew === true});
+    });
+    ALL.forEach(function(x){
+      var o = (saved && saved.items && saved.items[x.id]) || {};
+      ed[x.id] = {
+        name: typeof o.name === 'string' ? o.name : x.name,
+        price: typeof o.price === 'number' ? o.price : x.price,
+        off: o.off === true,
+        img: typeof o.img === 'string' ? o.img : null
+      };
+    });
+  }
+
+  function changed(x){
+    var e = ed[x.id];
+    return e.name !== x.name || e.price !== x.price || e.off || !!e.img;
+  }
+
+  /* ---------- tabs ---------- */
+  function renderTabs(){
+    var nz = secOf('newoffers');
+    var tabs = catList().map(function(c){
+      return [c.id, c.id === 'newoffers' ? '⭐ New Offers · ' + (nz && nz.on ? 'ON' : 'OFF') : c.label];
+    });
+    $('#tabs').innerHTML = '<button class="tab arr" data-t="__order" aria-selected="'+(tab === '__order' ? 'true' : 'false')+'">↕ Arrange categories (upar / neeche)</button>' +
+      tabs.map(function(t){
+        return '<button class="tab" data-t="'+t[0]+'" aria-selected="'+(t[0] === tab ? 'true' : 'false')+'">'+esc(t[1])+'</button>';
+      }).join('') + '<button class="tab add" data-newsec="1" aria-selected="false">➕ New section (new category)</button>';
+  }
+  function sectionHead(z){
+    if(z.id === 'newoffers'){
+      return '<div class="row" style="border-color:#FFCC00"><span class="lab" style="margin-top:0"><b>⭐ New Offers</b> (special category on the menu)</span>' +
+        '<label class="chk" style="margin:10px 0 6px;font-size:16px"><input type="checkbox" data-sf="on"'+(z.on ? ' checked' : '')+'> <b>Show New Offers on site</b></label>' +
+        '<span class="note" style="display:block">'+(z.on ? 'ON: customers see this category (only items ticked <b>Show on site</b> appear). Position badalne ke liye "Arrange categories" kholein.' : 'OFF: New Offers is hidden from customers. Tick the box above and press Save to show it.')+'</span></div>';
+    }
+    return '<div class="row"><span class="lab" style="margin-top:0">Section name (this becomes a category on the site)</span>' +
+      '<input type="text" maxlength="40" data-sf="title" value="'+esc(z.title)+'" placeholder="e.g. Ramzan Deals, Family Packs">' +
+      '<span class="lab">Emoji (optional)</span><input type="text" maxlength="8" data-sf="emoji" value="'+esc(z.emoji)+'" placeholder="🍦">' +
+      '<div class="chks"><label class="chk"><input type="checkbox" data-sf="on"'+(z.on ? ' checked' : '')+'> Show section on site</label>' +
+      '<label class="chk"><input type="checkbox" data-sf="first"'+(z.first ? ' checked' : '')+'> Show this category first</label></div>' +
+      '<div class="acts"><button class="btn del" data-sact="del">Delete section</button></div></div>';
+  }
+  function photoThumb(img){ return img ? '<img class="thumb" alt="" src="'+img+'">' : '<div class="thumb none">No photo</div>'; }
+  function customRow(x){
+    return '<div class="row cust'+(x.on ? '' : ' draft')+'" data-crow="'+x.id+'" data-rid="'+x.id+'">' +
+      '<div class="head">'+mvCol(x.id)+photoThumb(x.img)+'<div class="t"><span class="lab" style="margin-top:0">Name <span data-state>'+(x.on ? '<span class="live">• showing on site</span>' : '<span class="draft-t">• not shown yet</span>')+'</span></span>' +
+      '<input type="text" maxlength="120" data-cid="'+x.id+'" data-cf="name" value="'+esc(x.name)+'" placeholder="e.g. Family Feast Deal"></div></div>' +
+      '<span class="lab">Description (optional)</span><input type="text" maxlength="200" data-cid="'+x.id+'" data-cf="desc" value="'+esc(x.desc)+'">' +
+      '<span class="lab">Price (Rs.)</span><input type="number" inputmode="numeric" min="0" data-cid="'+x.id+'" data-cf="price" value="'+numVal(x.price)+'">' +
+      '<div class="acts"><button class="btn" data-cact="photo" data-cid="'+x.id+'">Change photo</button>' +
+      (x.img ? '<button class="btn" data-cact="rmphoto" data-cid="'+x.id+'">Remove photo</button>' : '') +
+      '<button class="btn del" data-cact="del" data-cid="'+x.id+'">Delete</button></div>' +
+      '<div class="chks"><label class="chk"><input type="checkbox" data-cid="'+x.id+'" data-cf="on"'+(x.on ? ' checked' : '')+'> <b>Show on site</b></label>' +
+      '<label class="chk"><input type="checkbox" data-cid="'+x.id+'" data-cf="isNew"'+(x.isNew ? ' checked' : '')+'> NEW badge</label></div></div>';
+  }
+  function baseRow(x){
+    var e = ed[x.id];
+    return '<div class="row'+(e.off?' off':'')+'" data-row="'+x.id+'" data-rid="'+x.id+'">' +
+      '<div class="head">' + mvCol(x.id) + photoThumb(e.img) +
+      '<div class="t"><span class="lab" style="margin-top:0">Name'+(changed(x)?' <span class="mark">• edited</span>':'')+'</span>' +
+      '<input type="text" maxlength="120" data-id="'+x.id+'" data-f="name" value="'+esc(e.name)+'"></div></div>' +
+      '<span class="lab">Price (Rs.)</span><input type="number" inputmode="numeric" min="0" data-id="'+x.id+'" data-f="price" value="'+(isNaN(e.price) ? '' : e.price)+'">' +
+      '<div class="acts"><button class="btn" data-act="photo" data-id="'+x.id+'">Change photo</button>' +
+      (e.img ? '<button class="btn" data-act="rmphoto" data-id="'+x.id+'">Remove photo</button>' : '') +
+      '<button class="btn" data-act="reset" data-id="'+x.id+'">Reset item</button>' +
+      '<label class="chk"><input type="checkbox" data-id="'+x.id+'" data-f="off"'+(e.off?' checked':'')+'> Hide</label></div></div>';
+  }
+  function render(){
+    renderTabs();
+    if(tab === '__order'){
+      $('#list').innerHTML = '<p class="note" style="margin-top:0">⠿ ko pakar kar upar/neeche <b>drag</b> karein, ya ▲ ▼ dabayen. Customer menu mein categories isi tarteeb se aayengi. Phir <b>Save</b> dabayen.</p>' +
+        catList().map(function(c){
+          var hid = c.sec && c.sec.on === false || c.id === 'newoffers' && !(c.sec && c.sec.on);
+          return '<div class="row" data-rid="'+c.id+'"><div class="head">'+mvCol(c.id)+'<div class="t"><b>'+esc(c.label)+'</b>'+(hid ? ' <span class="draft-t">• hidden</span>' : '')+'</div></div></div>';
+        }).join('');
+      return;
+    }
+    var z = secOf(tab);
+    var html = (z ? sectionHead(z) : '') +
+      '<button class="btn yel addbtn" data-addnew="1">➕ Add new offer / item here</button>' +
+      '<p class="note" style="margin:0 2px 10px">⠿ ko drag karein ya ▲ ▼ dabayen — items ki position badalne ke liye.</p>';
+    if(z && !cs.items.some(function(x){ return x.sec === tab; })) html += '<p class="note">This section is empty. Press the yellow button to add the first item, then tick <b>Show on site</b> and Save.</p>';
+    html += itemList(tab).map(function(e){ return e.cust ? customRow(e.cust) : baseRow(e.base); }).join('');
+    $('#list').innerHTML = html;
+  }
+
+  /* ---------- re-ordering: ▲ ▼ buttons and drag handle ---------- */
+  function currentIds(){ return tab === '__order' ? catList().map(function(c){ return c.id; }) : itemList(tab).map(function(e){ return e.id; }); }
+  function storeOrder(ids){ if(tab === '__order') ord.cats = ids; else ord.items[tab] = ids; setDirty(true); }
+  function moveBy(id, d){
+    var ids = currentIds(), i = ids.indexOf(id), j = i + d; if(i < 0 || j < 0 || j >= ids.length) return;
+    ids.splice(j, 0, ids.splice(i, 1)[0]); storeOrder(ids); render();
+    var el = document.querySelector('[data-rid="'+id+'"].row'); if(el && el.scrollIntoView) el.scrollIntoView({block:'nearest'});
+  }
+  var drag = null;
+  function dragPlace(){
+    var rows = [].slice.call($('#list').querySelectorAll('.row[data-rid]')).filter(function(r){ return r !== drag.row; });
+    var before = null;
+    for(var i = 0; i < rows.length; i++){ var rc = rows[i].getBoundingClientRect(); if(drag.y < rc.top + rc.height / 2){ before = rows[i]; break; } }
+    if(before){ if(drag.row.nextElementSibling !== before) before.parentNode.insertBefore(drag.row, before); }
+    else if(rows.length){ var last = rows[rows.length - 1]; if(drag.row.previousElementSibling !== last) last.parentNode.insertBefore(drag.row, last.nextSibling); }
+  }
+  function dragMove(ev){ if(!drag) return; drag.y = ev.clientY; dragPlace(); }
+  function dragEnd(){
+    if(!drag) return;
+    clearInterval(drag.timer); window.removeEventListener('pointermove', dragMove); window.removeEventListener('pointerup', dragEnd); window.removeEventListener('pointercancel', dragEnd);
+    drag.row.classList.remove('drag');
+    var ids = [].slice.call($('#list').querySelectorAll('.row[data-rid]')).map(function(r){ return r.dataset.rid; });
+    drag = null; storeOrder(ids); if(tab === '__order') renderTabs();
+  }
+  $('#list').addEventListener('pointerdown', function(ev){
+    var g = ev.target.closest('.grip'); if(!g) return;
+    ev.preventDefault();
+    var row = g.closest('.row[data-rid]'); if(!row) return;
+    drag = {row:row, y:ev.clientY, timer:setInterval(function(){
+      if(!drag) return;
+      if(drag.y < 120) window.scrollBy(0, -14); else if(drag.y > window.innerHeight - 140) window.scrollBy(0, 14); else return;
+      dragPlace();
+    }, 16)};
+    row.classList.add('drag');
+    window.addEventListener('pointermove', dragMove); window.addEventListener('pointerup', dragEnd); window.addEventListener('pointercancel', dragEnd);
+  });
+
+  /* ---------- editing ---------- */
+  $('#payrow').addEventListener('input', function(ev){
+    var el = ev.target.closest('.payblk'), f = ev.target.dataset.pf; if(!el || !f) return;
+    var e = pay[el.dataset.k];
+    if(f === 'on') e.on = ev.target.checked; else e[f] = ev.target.value;
+    setDirty(true);
+  });
+  $('#payrow').addEventListener('click', function(ev){
+    var b = ev.target.closest('[data-pact]'); if(!b) return;
+    var k = b.closest('.payblk').dataset.k;
+    if(b.dataset.pact === 'logo'){ picking = 'pay:' + k; $('#file').value = ''; $('#file').click(); return; }
+    pay[k].img = null; renderPay(); setDirty(true);
+  });
+  ['#wa', '#delivery', '#topping'].forEach(function(s){ $(s).addEventListener('input', function(){ setDirty(true); }); });
+
+  $('#list').addEventListener('input', function(ev){
+    var t = ev.target, z = secOf(tab);
+    if(t.dataset.sf === 'title' && z){ z.title = t.value; var tb = document.querySelector('.tab[data-t="'+tab+'"]'); if(tb) tb.textContent = (z.emoji || '') + ' ' + (t.value || 'Untitled'); setDirty(true); return; }
+    if(t.dataset.sf === 'emoji' && z){ z.emoji = t.value; setDirty(true); return; }
+    var id = t.dataset.id, f = t.dataset.f;
+    if(id && f){
+      var e = ed[id];
+      if(f === 'name') e.name = t.value;
+      else if(f === 'price') e.price = t.value === '' ? NaN : Math.round(Number(t.value));
+      setDirty(true); return;
+    }
+    var cid = t.dataset.cid, cf = t.dataset.cf; if(!cid || !cf || t.type === 'checkbox') return;
+    var x = itemOf(cid); if(!x) return;
+    if(cf === 'name') x.name = t.value;
+    else if(cf === 'desc') x.desc = t.value;
+    else if(cf === 'price') x.price = t.value === '' ? null : Math.round(Number(t.value));
+    setDirty(true);
+  });
+  $('#list').addEventListener('change', function(ev){
+    var t = ev.target, z = secOf(tab);
+    if(t.dataset.f === 'off'){ ed[t.dataset.id].off = t.checked; setDirty(true); t.closest('.row').classList.toggle('off', t.checked); return; }
+    if(t.dataset.sf === 'on' && z){ z.on = t.checked; setDirty(true); if(z.id === 'newoffers') render(); else renderTabs(); return; }
+    if(t.dataset.sf === 'first' && z){ z.first = t.checked; setDirty(true); return; }
+    var id = t.dataset.cid, f = t.dataset.cf; if(!id || !f || t.type !== 'checkbox') return;
+    var x = itemOf(id); if(!x) return;
+    x[f] = t.checked; setDirty(true);
+    if(f === 'on'){
+      var row = t.closest('.row'); row.classList.toggle('draft', !t.checked);
+      row.querySelector('[data-state]').innerHTML = t.checked ? '<span class="live">• showing on site</span>' : '<span class="draft-t">• not shown yet</span>';
+    }
+  });
+  $('#list').addEventListener('click', function(ev){
+    var mvb = ev.target.closest('[data-mv]'); if(mvb){ moveBy(mvb.dataset.rid, Number(mvb.dataset.mv)); return; }
+    var b = ev.target.closest('[data-act],[data-addnew],[data-cact],[data-sact]'); if(!b) return;
+    if(b.dataset.act){
+      var id = b.dataset.id, x = ALL.filter(function(z){ return z.id === id; })[0];
+      if(b.dataset.act === 'photo'){ picking = id; $('#file').value = ''; $('#file').click(); return; }
+      if(b.dataset.act === 'rmphoto'){ ed[id].img = null; }
+      if(b.dataset.act === 'reset'){ ed[id] = {name:x.name, price:x.price, off:false, img:null}; }
+      setDirty(true); render(); return;
+    }
+    if(b.dataset.addnew){
+      var n = {id:uid('c'), sec:tab, name:'', desc:'', price:null, img:null, on:false, isNew:true};
+      cs.items.unshift(n); setDirty(true); render();
+      var inp = document.querySelector('[data-crow="'+n.id+'"] [data-cf="name"]'); if(inp){ inp.scrollIntoView({block:'center'}); inp.focus(); }
+      return;
+    }
+    if(b.dataset.sact === 'del'){
+      var z = secOf(tab); if(!z) return;
+      if(!confirm('Delete the section "' + (z.title || 'Untitled') + '" and all items inside it?')) return;
+      cs.sections = cs.sections.filter(function(q){ return q.id !== z.id; });
+      cs.items = cs.items.filter(function(q){ return q.sec !== z.id; });
+      tab = 'newoffers'; setDirty(true); render(); return;
+    }
+    var cid = b.dataset.cid, it = itemOf(cid); if(!it) return;
+    if(b.dataset.cact === 'photo'){ picking = 'c:' + cid; $('#file').value = ''; $('#file').click(); return; }
+    if(b.dataset.cact === 'rmphoto'){ it.img = null; }
+    if(b.dataset.cact === 'del'){
+      if(!confirm('Delete "' + (it.name || 'this item') + '"?')) return;
+      cs.items = cs.items.filter(function(q){ return q.id !== cid; });
+    }
+    setDirty(true); render();
+  });
+  $('#tabs').addEventListener('click', function(ev){
+    var b = ev.target.closest('.tab'); if(!b) return;
+    if(b.dataset.newsec){
+      var t = (prompt('Name of the new section (it will be a category on the site)\nExample: Ramzan Deals, Family Packs') || '').trim().slice(0, 40);
+      if(!t) return;
+      var z = {id:uid('s'), title:t, emoji:'🍽️', on:true, first:false}; cs.sections.push(z); tab = z.id; setDirty(true); render(); return;
+    }
+    tab = b.dataset.t; render();
+  });
+
+  /* ---------- photo: crop to a square and shrink so the menu stays light ---------- */
+  $('#file').addEventListener('change', function(){
+    var f = this.files && this.files[0]; if(!f || !picking) return;
+    var id = picking, url = URL.createObjectURL(f), img = new Image();
+    img.onload = function(){
+      if(id.indexOf('pay:') === 0){
+        var sc = Math.min(240 / img.width, 120 / img.height, 1), lw = Math.max(1, Math.round(img.width * sc)), lh = Math.max(1, Math.round(img.height * sc));
+        var lc = document.createElement('canvas'); lc.width = lw; lc.height = lh; lc.getContext('2d').drawImage(img, 0, 0, lw, lh);
+        var ld = lc.toDataURL('image/webp', 0.9); if(ld.indexOf('data:image/webp') !== 0) ld = lc.toDataURL('image/png');
+        URL.revokeObjectURL(url); pay[id.slice(4)].img = ld; renderPay(); setDirty(true); return;
+      }
+      var S = 320, c = document.createElement('canvas'); c.width = S; c.height = S;
+      var ctx = c.getContext('2d'), s = Math.max(S / img.width, S / img.height), w = img.width * s, h = img.height * s;
+      ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, S, S);
+      ctx.drawImage(img, (S - w) / 2, (S - h) / 2, w, h);
+      var d = c.toDataURL('image/webp', 0.75);
+      if(d.indexOf('data:image/webp') !== 0) d = c.toDataURL('image/jpeg', 0.78);
+      URL.revokeObjectURL(url);
+      if(id.indexOf('c:') === 0){ var ci = itemOf(id.slice(2)); if(ci){ ci.img = d; setDirty(true); render(); } return; }
+      ed[id].img = d; setDirty(true); render();
+    };
+    img.onerror = function(){ URL.revokeObjectURL(url); setMsg('That file is not a usable picture', 'err'); };
+    img.src = url;
+  });
+
+  /* ---------- save ---------- */
+  $('#save').addEventListener('click', function(){
+    var items = {}, bad = null, payOut = {};
+    PAYK.forEach(function(k){
+      var e = pay[k], digits = String(e.number).replace(/\D/g, ''), o = {on:e.on === true};
+      if(digits){ if(!/^\d{10,15}$/.test(digits)) bad = PAYN[k] + ' number is wrong'; else o.number = digits; }
+      else if(e.on) bad = PAYN[k] + ' needs an account number';
+      if(e.title.trim()) o.title = e.title.trim().slice(0, 60);
+      if(e.img) o.img = e.img;
+      payOut[k] = o;
+    });
+    var wa = normWA($('#wa').value); if(!wa) bad = 'WhatsApp number is wrong (example: 03116226121)';
+    var dv = $('#delivery').value === '' ? NaN : Math.round(Number($('#delivery').value)); if(!okN(dv)) bad = 'Delivery charge is empty';
+    var tp = $('#topping').value === '' ? NaN : Math.round(Number($('#topping').value)); if(!okN(tp)) bad = 'Topping price is empty';
+    ALL.forEach(function(x){
+      var e = ed[x.id], o = {};
+      if(!e.name.trim()) bad = 'A name is empty';
+      if(e.name.trim() !== x.name) o.name = e.name.trim();
+      if(!okN(e.price)) bad = 'A price is empty';
+      if(e.price !== x.price) o.price = e.price;
+      if(e.off) o.off = true;
+      if(e.img) o.img = e.img;
+      if(Object.keys(o).length) items[x.id] = o;
+    });
+    var cOut = {sections:[], items:[]};
+    cs.sections.forEach(function(z){
+      var o = {id:z.id, title:(z.title.trim() || 'New section').slice(0, 40), on:z.on !== false, first:z.first === true};
+      if(z.emoji && z.emoji.trim()) o.emoji = z.emoji.trim().slice(0, 8);
+      cOut.sections.push(o);
+    });
+    cs.items.forEach(function(x){
+      var nm = x.name.trim();
+      if(!nm){ if(x.on) bad = 'A new item that is ticked "Show on site" has no name'; return; }
+      var o = {id:x.id, sec:x.sec, name:nm.slice(0, 120), on:x.on === true, isNew:x.isNew === true};
+      if(!okN(x.price)) bad = '"' + nm + '" needs a price';
+      o.price = x.price;
+      if(x.desc.trim()) o.desc = x.desc.trim().slice(0, 200);
+      if(x.img) o.img = x.img;
+      cOut.items.push(o);
+    });
+    var known = {}, oOut = {};
+    catList().forEach(function(c){ known[c.id] = 1; });
+    if(ord.cats) oOut.cats = ord.cats.filter(function(id){ return known[id]; });
+    Object.keys(ord.items).forEach(function(k){
+      if(!known[k]) return;
+      var ok = {}; (catOf(k) ? catOf(k).items : []).forEach(function(x){ ok[x.id] = 1; });
+      cs.items.forEach(function(x){ if(x.sec === k) ok[x.id] = 1; });
+      var arr = ord.items[k].filter(function(id){ return ok[id]; });
+      if(arr.length){ oOut.items = oOut.items || {}; oOut.items[k] = arr; }
+    });
+    if(bad){ setMsg(bad + ' — please fix it', 'err'); return; }
+    var btn = this; btn.disabled = true; setMsg('Saving…');
+    api('PUT', '', {v:1, items:items, whatsapp:wa, delivery:dv, topping:tp, pay:payOut, custom:cOut, order:oOut}).then(function(r){
+      if(r.status === 401){ logout('Password changed — log in again'); return; }
+      if(r.status === 413) throw new Error('too large');
+      if(!r.ok) throw new Error('save failed');
+      $('#wa').value = showWA(wa);
+      setDirty(false); setMsg('Saved ✓ Customers will see it within a minute', 'ok');
+    }).catch(function(err){
+      btn.disabled = false;
+      setMsg(err && err.message === 'too large' ? 'Too many / too big photos — remove a few photos and try again' : 'Could not save — check your internet and try again', 'err');
+    });
+  });
+
+  window.addEventListener('beforeunload', function(e){ if(dirty){ e.preventDefault(); e.returnValue = ''; } });
+
+  /* ---------- login ---------- */
+  function logout(msg){
+    try{ sessionStorage.removeItem('cowbees_admin'); localStorage.removeItem('cowbees_admin'); }catch(e){}
+    pass = ''; dirty = false;
+    $('#app').hidden = true; $('#login').hidden = false; $('#lerr').textContent = msg || ''; $('#pw').value = '';
+  }
+  function enter(){
+    api('GET', '?t=' + Date.now()).then(function(r){ return r.json(); }).then(function(saved){
+      load(saved); render(); setDirty(false); setMsg('No changes yet');
+      $('#login').hidden = true; $('#app').hidden = false;
+    }).catch(function(){ logout('Could not load the menu — check your internet'); });
+  }
+  function tryLogin(p){
+    $('#lerr').textContent = ''; $('#go').disabled = true;
+    pass = p;
+    api('GET', '?auth=1').then(function(r){
+      $('#go').disabled = false;
+      if(r.ok){ try{ if($('#rem').checked) localStorage.setItem('cowbees_admin', pass); else sessionStorage.setItem('cowbees_admin', pass); }catch(e){} enter(); }
+      else if(r.status === 401){ pass = ''; $('#lerr').textContent = 'Wrong password'; }
+      else if(r.status === 500){ pass = ''; $('#lerr').textContent = 'ADMIN_PASSWORD is not set on Netlify yet'; }
+      else { pass = ''; $('#lerr').textContent = 'Save server not found. Open this page from your Netlify site (/admin), not from a preview.'; }
+    }).catch(function(){ $('#go').disabled = false; pass = ''; $('#lerr').textContent = 'No connection — try again'; });
+  }
+  $('#go').addEventListener('click', function(){ tryLogin($('#pw').value); });
+  $('#pw').addEventListener('keydown', function(e){ if(e.key === 'Enter') tryLogin($('#pw').value); });
+  $('#out').addEventListener('click', function(){ if(!dirty || confirm('Discard unsaved changes?')) logout(''); });
+  /* ---------- install as app ---------- */
+  var deferred = null;
+  function showInstall(v){ $('#install').hidden = !v; $('#install2').hidden = !v; }
+  window.addEventListener('beforeinstallprompt', function(e){ e.preventDefault(); deferred = e; showInstall(true); });
+  window.addEventListener('appinstalled', function(){ deferred = null; showInstall(false); });
+  function doInstall(){ if(!deferred) return; deferred.prompt(); deferred = null; showInstall(false); }
+  $('#install').addEventListener('click', doInstall); $('#install2').addEventListener('click', doInstall);
+  var standalone = window.matchMedia && window.matchMedia('(display-mode: standalone)').matches || navigator.standalone;
+  if(/iphone|ipad|ipod/i.test(navigator.userAgent) && !standalone) $('#iosnote').hidden = false;
+  if(pass) tryLogin(pass);
+})();
+</script>
+</body>
+</html>
